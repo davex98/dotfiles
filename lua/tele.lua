@@ -17,16 +17,10 @@ require("telescope").setup({
 require("telescope").load_extension("fzy_native")
 require("telescope").load_extension("goimpl")
 
--- Mappings --
-local function buf_set_keymap(...)
-	vim.api.nvim_buf_set_keymap(bufnr, ...)
+local M = {}
+
+M.symbols = function()
+	require("telescope.builtin").lsp_document_symbols({ symbols = { "function", "struct", "method", "interface" } })
 end
 
-local opts = { noremap = true, silent = true }
-buf_set_keymap(
-	"n",
-	"<space>b",
-	"<Cmd>lua require('telescope.builtin').live_grep({search_dirs={vim.fn.expand('%:p')}})<CR>",
-	opts
-)
-buf_set_keymap("n", "<space>r", "<cmd>lua require('telescope.builtin').live_grep()<CR>", opts)
+return M

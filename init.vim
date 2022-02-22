@@ -42,6 +42,8 @@ Plug 'arkav/lualine-lsp-progress'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'edolphin-ydf/goimpl.nvim'
+
+Plug 'folke/zen-mode.nvim'
 call plug#end()                                                               
 
 
@@ -105,9 +107,12 @@ lua require("lsp_config")
 lua require("completion")
 lua require("highlight")
 lua require("status_line")
+lua require("zen")
 
 nnoremap <c-u> <cmd>Telescope find_files<cr>
+nnoremap <leader>d <cmd>lua require("tele").symbols()<cr>
 nnoremap <leader>gl <cmd>lua require('go_lint').run()<cr>
+nnoremap <leader>z <cmd>ZenMode<cr>
 
 autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 
@@ -115,5 +120,6 @@ nnoremap <C-h> <cmd>wincmd h<cr>
 nnoremap <C-j> <cmd>wincmd j<cr>
 nnoremap <C-k> <cmd>wincmd k<cr>
 nnoremap <C-l> <cmd>wincmd l<cr>
+nnoremap <leader>e <cmd>Vex <cr>
 
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
