@@ -1,12 +1,18 @@
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 cmp.setup({
 	snippet = {
 		expand = function(args)
-			vim.fn["vsnip#anonymous"](args.body)
+		require('luasnip').lsp_expand(args.body)
 		end,
 	},
 	mapping = {
+["<C-j>"] = cmp.mapping(function(fallback)
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      end
+    end, { "i", "s" }),
 		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
 		["<C-y>"] = cmp.mapping.confirm({
 			behavior = cmp.ConfirmBehavior.Insert,
@@ -19,9 +25,9 @@ cmp.setup({
 		["<CR>"] = cmp.mapping.confirm({ select = true }),
 	},
 	sources = cmp.config.sources({
-		{ name = "nvim_lsp", keyword_length = 3 },
+		{ name = "nvim_lsp", keyword_length = 2 },
+		{ name = "luasnip" },
 		{ name = "path" },
-		{ name = "vsnip" },
 		{ name = "buffer", keyword_length = 5 },
 	}),
 	formatting = {

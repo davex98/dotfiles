@@ -13,7 +13,7 @@ M.run = function()
 	end
 
 	print("Running golangci-lint:", root)
-	local lint_exe = "/usr/local/bin/golangci-lint"
+	local lint_exe = "/home/kuba/go/bin/golangci-lint"
 
 	local j = Job:new({
 		lint_exe,
