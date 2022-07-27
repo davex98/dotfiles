@@ -41,39 +41,40 @@ Plug 'arkav/lualine-lsp-progress'
 
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'edolphin-ydf/goimpl.nvim'
 
-Plug 'folke/zen-mode.nvim'
 Plug 'tjdevries/cyclist.vim'
 Plug 'windwp/nvim-autopairs'
 Plug 'rafamadriz/friendly-snippets'
 
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'folke/zen-mode.nvim'
 
-Plug 'ellisonleao/glow.nvim'
+Plug 'ray-x/lsp_signature.nvim'
 
-Plug 'neovim/nvim-lspconfig'
 Plug 'simrat39/rust-tools.nvim'
-
-" Debugging
-Plug 'nvim-lua/plenary.nvim'
-Plug 'mfussenegger/nvim-dap'
 call plug#end()                                                               
 
+let g:terraform_fmt_on_save=1
+
+let g:tokyonight_style = "night"
 
 colorscheme gruvbox
-
+	
 let mapleader = " "
 
 map <leader>w :up<CR>
 map <leader>q :q<CR>
+map <leader>a :qa!<CR>
 
 
 vnoremap " <esc>`>a"<esc>`<i"<esc>
 vnoremap ' <esc>`>a'<esc>`<i'<esc>
 vnoremap ) <esc>`>a)<esc>`<i(<esc>
 vnoremap ( <esc>`>a)<esc>`<i(<esc>
-"
+vnoremap } <esc>`>a}<esc>`<i{<esc>
+vnoremap { <esc>`>a}<esc>`<i{<esc>
+vnoremap < <esc>`>a><esc>`<i<<esc>
+vnoremap > <esc>`>a><esc>`<i<<esc>
+
 inoremap , ,<c-g>u
 inoremap . .<c-g>u
 inoremap ! !<c-g>u
@@ -93,6 +94,7 @@ nmap ,P "0P
 
 nnoremap H ^
 nnoremap L $
+
 vnoremap H ^
 vnoremap L $
 
@@ -118,50 +120,40 @@ nnoremap <leader>s <C-w>s
 
 lua require("tele")
 lua require("lsp_config")
-lua require("completion")
 lua require("highlight")
 lua require("status_line")
-lua require("zen")
 lua require('nvim-autopairs').setup{}
 lua require("luasnip.loaders.from_vscode").load()
+lua require("completion")
+lua require("zen")
+lua require("lsp_signature").setup({hint_prefix = ""})
+nnoremap <leader>z <cmd>ZenMode <cr>
 
 nnoremap <c-u> <cmd>Telescope find_files<cr>
 nnoremap <leader>d <cmd>lua require("tele").symbols()<cr>
 nnoremap <leader>gl <cmd>lua require('go_lint').run()<cr>
-nnoremap <leader>z <cmd>ZenMode<cr>
+nnoremap <leader>rl <cmd>lua require('rust_lint').run()<cr>
 
 autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-
-"nnoremap ; :
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting()
 
 nnoremap <C-h> <cmd>wincmd h<cr>
 nnoremap <C-j> <cmd>wincmd j<cr>
 nnoremap <C-k> <cmd>wincmd k<cr>
 nnoremap <C-l> <cmd>wincmd l<cr>
+
 nnoremap <leader>e <cmd>Vex <cr>
-
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-
-let t:is_transparent = 0
-function! Toggle_transparent()
-    if t:is_transparent == 0
-        hi Normal guibg=NONE ctermbg=NONE
-        let t:is_transparent = 1
-    else
-        set background=dark
-        let t:is_tranparent = 0
-    endif
-endfunction
-nnoremap <C-t> : call Toggle_transparent()<CR>
-hi Normal guibg=NONE ctermbg=NONE
+nnoremap <leader>gg <cmd>OpenBrowserSearch <cr>
 
 noremap <leader>y "+y
 noremap <leader>p "+p
 nnoremap <leader>cd :cd %:p:h<CR>
+
 call cyclist#add_listchar_option_set('limited', {
-        \ 'eol': '↲',
+	\ 'eol': '↲',
         \ 'tab': '» ',
-        \ 'trail': '·',
+       \ 'space': '␣', 
+       \ 'trail': '·',
         \ 'extends': '<',
         \ 'precedes': '>',    
         \ 'conceal': '┊',

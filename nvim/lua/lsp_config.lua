@@ -11,7 +11,7 @@ local on_attach = function(client, bufnr)
 	-- Mappings --
 	buf_set_keymap("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
 	buf_set_keymap("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-	buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+	buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 	buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
 	buf_set_keymap("n", "ga", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 	buf_set_keymap("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
@@ -33,9 +33,30 @@ lspconfig.gopls.setup({
 			analyses = {
 				unusedparams = true,
 				shadow = true,
+				unusedwrite = true,
+				nilness = true,
 			},
 			staticcheck = true,
+			gofumpt = true,
 		},
 	},
 	on_attach = on_attach,
 })
+
+
+lspconfig.rust_analyzer.setup({
+	cmd = { "rust-analyzer" },
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
+require("rust-tools").setup({
+	server = {
+		on_attach = on_attach,
+		capabilities = capabilities,
+	},
+})
+
+lspconfig.terraformls.setup{}
+
+ require('lspconfig').yamlls.setup{}
