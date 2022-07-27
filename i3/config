@@ -169,7 +169,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-exec_always --no-startup-id feh --bg-fill $HOME/Downloads/japan.png
+exec_always --no-startup-id feh --bg-fill $HOME/.dotfiles/wallpaper/1.png
 
 bar {
 	status_command /usr/bin/bumblebee-status \
