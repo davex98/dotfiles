@@ -172,7 +172,7 @@ bindsym $mod+r mode "resize"
 exec_always --no-startup-id feh --bg-fill $HOME/.dotfiles/wallpaper/1.png
 
 bar {
-	status_command /usr/bin/bumblebee-status \
+	status_command ~/.dotfiles/bumblebee-status/bumblebee-status \
 		-m cpu memory battery time \
 		pasink pasource -p time.format="%H:%M" -t gruvbox-powerline
 		position top
