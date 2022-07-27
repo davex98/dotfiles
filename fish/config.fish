@@ -13,6 +13,7 @@ fzf_key_bindings
 set -gx FZF_DEFAULT_OPTS '--height 15% --layout=reverse --border'
 alias lc 'history -1 | xclip -sel clip'
 alias v nvim
+alias dot 'cd ~/.dotfiles'
 
 function gcm
     ls -l $argv
