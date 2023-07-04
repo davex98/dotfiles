@@ -1,5 +1,3 @@
-[core]
-	editor = nvim
 [user]
 	name = Jakub Burghardt
 	email = jakuburghardt@gmail.com
@@ -12,3 +10,28 @@
 	remotes = "remote -v"
 	amend = "commit --amend --no-edit"
 	uncommit = "reset --soft HEAD~1"
+	amendm = "git commit  --amend -m"
+[core]
+    pager = delta
+    editor = nvim
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true    # use n and N to move between diff sections
+    light = false
+    line-numbers = true
+    hunk-header-style = omit
+    file-style = green
+    grep-file-style = green 
+    grep-line-number-style =  green
+    line-numbers-left-style = green
+    line-numbers-right-style = green
+[merge]
+    conflictstyle = diff3
+[diff]
+    colorMoved = default
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+    hunk-header-decoration-style = yellow box
