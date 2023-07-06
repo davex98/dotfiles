@@ -21,7 +21,6 @@ end
 set __fish_git_prompt_showcolorhints
 set fish_greeting
 
-fzf_key_bindings
 set -gx FZF_DEFAULT_OPTS '--height 20% --layout=reverse --border'
 alias lc 'history -1 | pbcopy'
 alias dot 'cd ~/.dotfiles'
