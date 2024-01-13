@@ -1,40 +1,38 @@
-local mason_status, mason = pcall(require, "mason")
-if not mason_status then
-	return
-end
-
-local mason_lspconfig_status, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not mason_lspconfig_status then
-	return
-end
-
-local mason_null_ls_status, mason_null_ls = pcall(require, "mason-null-ls")
-if not mason_null_ls_status then
-	return
-end
-
-mason.setup()
-
-mason_lspconfig.setup({
-	ensure_installed = {
-		"lua_ls",
-		"tailwindcss",
-		"tsserver",
-		"gopls",
-		"solargraph",
-		"yamlls",
+return {
+	"williamboman/mason.nvim",
+	dependencies = {
+		"williamboman/mason-lspconfig.nvim",
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
-	automatic_installation = true,
-})
+	config = function()
+		local mason = require("mason")
+		local mason_lspconfig = require("mason-lspconfig")
+		local mason_tool_installer = require("mason-tool-installer")
 
-mason_null_ls.setup({
-	ensure_installed = {
-		"stylua",
-		"prettier",
-		"gofumpt",
-		"rubocop",
-		"golangci_lint",
-		"gomodifytags",
-	},
-	automatic_installation = true,
-})
+		mason.setup({
+			ui = {
+				icons = {
+					package_installed = "✓",
+					package_pending = "➜",
+					package_uninstalled = "✗",
+				},
+			},
+		})
+
+		mason_lspconfig.setup({
+			ensure_installed = {
+				"lua_ls",
+				"gopls",
+				"terraformls",
+				"yamlls",
+			},
+			automatic_installation = true, -- not the same as ensure_installed
+		})
+
+		mason_tool_installer.setup({
+			ensure_installed = {
+				"stylua", -- lua formatter
+			},
+		})
+	end,
+}

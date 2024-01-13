@@ -1,82 +1,92 @@
-local lspconfig_status, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_status then
-	return
-end
+return {
+  "neovim/nvim-lspconfig",
+  event = { "BufReadPre", "BufNewFile" },
+  dependencies = {
+    "hrsh7th/cmp-nvim-lsp",
+    { "antosha417/nvim-lsp-file-operations", config = true },
+  },
+  config = function()
+    local lspconfig = require("lspconfig")
+    local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
-local cmp_nvim_lsp_status, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-if not cmp_nvim_lsp_status then
-	return
-end
+    local keymap = vim.keymap
 
-local keymap = vim.keymap
+    local opts = { noremap = true, silent = true }
+    local on_attach = function(client, bufnr)
+      opts.buffer = bufnr
 
----@diagnostic disable-next-line: unused-local
-local on_attach = function(client, bufnr)
-	local opts = { noremap = true, silent = true, buffer = bufnr }
+      opts.desc = "Show LSP references"
+      keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
 
-	keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts)
-	keymap.set("n", "gy", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-	keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-	keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-	keymap.set("n", "ga", "<Cmd>lua vim.lsp.buf.code_action()<CR>", opts)
+      opts.desc = "Go to declaration"
+      keymap.set("n", "gd", vim.lsp.buf.declaration, opts)
 
-	keymap.set("n", "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", opts)
+      opts.desc = "Show LSP definitions"
+      keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
 
-	keymap.set("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-	keymap.set("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-	keymap.set("n", "<space>a", "<cmd>lua vim.diagnostic.setqflist()<CR>", opts)
+      opts.desc = "Show LSP implementations"
+      keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
 
-	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
-	keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
-	keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics<CR>", opts) -- show  diagnostics for line
-	keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
-	keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
-	keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
-	keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
-end
+      opts.desc = "Show LSP type definitions"
+      keymap.set("n", "gy", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
-local capabilities = cmp_nvim_lsp.default_capabilities()
+      opts.desc = "See available code actions"
+      keymap.set({ "n", "v" }, "ga", vim.lsp.buf.code_action, opts)
 
-lspconfig.gopls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+      opts.desc = "Smart rename"
+      keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-lspconfig.solargraph.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+      opts.desc = "Show buffer diagnostics"
+      keymap.set("n", "<leader>a", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
-lspconfig.yamlls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	settings = {
-		yaml = {
-			-- FIX mapKeyOrder warning
-			keyOrdering = false,
-		},
-	},
-})
+      opts.desc = "Show line diagnostics"
+      keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 
-lspconfig.tsserver.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+      opts.desc = "Go to previous diagnostic"
+      keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
 
-lspconfig["lua_ls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	settings = {
-		Lua = {
-			diagnostics = {
-				globals = { "vim" },
-			},
-			workspace = {
-				library = {
-					[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-					[vim.fn.stdpath("config") .. "/lua"] = true,
-				},
-			},
-		},
-	},
-})
+      opts.desc = "Go to next diagnostic"
+      keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+
+      opts.desc = "Show documentation for what is under cursor"
+      keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+      opts.desc = "Restart LSP"
+      keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+    end
+
+    local capabilities = cmp_nvim_lsp.default_capabilities()
+
+    lspconfig["gopls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        gopls = {
+          analyses = {
+            unusedparams = true,
+          },
+          staticcheck = true,
+          gofumpt = true,
+        },
+      },
+    })
+
+    lspconfig["lua_ls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" },
+          },
+          workspace = {
+            library = {
+              [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+              [vim.fn.stdpath("config") .. "/lua"] = true,
+            },
+          },
+        },
+      },
+    })
+  end,
+}

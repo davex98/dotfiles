@@ -37,8 +37,3 @@ keymap.set("v", "}", "<esc>`>a}<esc>`<i{<esc>")
 keymap.set("v", "{", "<esc>`>a}<esc>`<i{<esc>")
 keymap.set("v", "<", "<esc>`>a><esc>`<i<<esc>")
 keymap.set("v", ">", "<esc>`>a><esc>`<i<<esc>")
-
-keymap.set("n", "<leader>m", ":MaximizerToggle<CR>")
-
-keymap.set("n", "<C-u>", ":Telescope find_files hidden=true<CR>")
-keymap.set("n", "<leader>ff", ":Telescope live_grep<CR>")
