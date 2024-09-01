@@ -25,24 +25,27 @@ set -gx FZF_DEFAULT_OPTS '--height 20% --layout=reverse --border'
 alias lc 'history -1 | pbcopy'
 alias dot 'cd ~/.dotfiles'
 
-abbr -a -U -- ga 'git add'
-abbr -a -U -- gs 'git status'
-abbr -a -U -- gf 'git fetch'
-abbr -a -U -- gd 'git diff'
-abbr -a -U -- gcm 'git commit -m' 
-abbr -a -U -- gcb 'git checkout -b' 
-abbr -a -U -- gco 'git checkout $(git branch --format=\'%(refname:short)\' | fzf)'
-abbr -a -U -- m make
+abbr -a  -- ga 'git add'
+abbr -a  -- gs 'git status'
+abbr -a  -- gf 'git fetch'
+abbr -a  -- gd 'git diff'
+abbr -a  -- gcm 'git commit -m' 
+abbr -a  -- gcb 'git checkout -b' 
+abbr -a  -- gco 'git checkout $(git branch --format=\'%(refname:short)\' | fzf)'
+abbr -a  -- m make
 
-abbr -a -U -- fj 'cd $(git rev-parse --show-toplevel)'
+abbr -a  -- fj 'cd $(git rev-parse --show-toplevel)'
 
-abbr -a -U -- l 'exa'
-abbr -a -U -- ls 'exa'
-abbr -a -U -- ll 'exa -l'
-abbr -a -U -- lll 'exa -la'
+abbr -a  -- l 'exa'
+abbr -a  -- ls 'exa'
+abbr -a  -- ll 'exa -l'
+abbr -a  -- lll 'exa -la'
 
 set -x GOPATH $HOME/go
+set -x PATH $PATH $HOME/.pub-cache/bin
 set -x PATH $PATH $GOPATH/bin
+set -x PATH $PATH $HOME/fvm/default/bin
+
 fish_add_path /Users/kuba/.rbenv/versions/3.1.2
 source (rbenv init - | psub)
 source /opt/homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.fish.inc
