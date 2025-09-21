@@ -21,8 +21,10 @@ return {
 
 		mason_lspconfig.setup({
 			ensure_installed = {
+				"protols",
+				"helm_ls",
 				"lua_ls",
-				"gopls",
+				-- "gopls@0.20.0",
 				"tsserver",
 				"terraformls",
 				"yamlls",
