@@ -27,14 +27,14 @@ set -gx FZF_DEFAULT_OPTS '--height 20% --layout=reverse --border'
 alias lc 'history -1 | pbcopy'
 alias dot 'cd ~/.dotfiles'
 
-abbr -a -- ga 'git add'
-abbr -a -- gs 'git status'
-abbr -a -- gf 'git fetch'
-abbr -a -- gd 'git diff'
-abbr -a -- gcm 'git commit -m' 
-abbr -a -- gcb 'git checkout -b' 
-abbr -a -- gco 'git checkout $(git branch --format=\'%(refname:short)\' | fzf)'
-abbr -a -- m make
+abbr -a  -- ga 'git add'
+abbr -a  -- gs 'git status'
+abbr -a  -- gf 'git fetch'
+abbr -a  -- gd 'git diff'
+abbr -a  -- gcm 'git commit -m' 
+abbr -a  -- gcb 'git checkout -b' 
+abbr -a  -- gco 'git checkout $(git branch --format=\'%(refname:short)\' | fzf)'
+abbr -a  -- m make
 
 abbr -a -- fj 'cd $(git rev-parse --show-toplevel)'
 
@@ -48,7 +48,9 @@ abbr -a -- t 'terraform'
 abbr -a -- last-time 'math $CMD_DURATION/1000'
 
 set -x GOPATH $HOME/go
+set -x PATH $PATH $HOME/.pub-cache/bin
 set -x PATH $PATH $GOPATH/bin
+
 set -x PATH $PATH $HOME/kubectl-plugins
 set -x PATH $PATH $HOMEBREW_PREFIX/opt/coreutils/libexec/gnubin
 
